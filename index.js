@@ -14,7 +14,7 @@ const corsOptions = {
         'http://localhost:3000', 
         'http://localhost:3001', 
         'https://www-coral-three.vercel.app', 
-        'https://duanthayhau.onrender.com'
+        'https://database-imft.onrender.com'
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
