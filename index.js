@@ -16,6 +16,7 @@ const corsOptions = {
         'https://database-ro16.onrender.com',
         'https://www-xi-blush.vercel.app',
         'https://www-azure-seven.vercel.app',
+        'https://cntt-zeta.vercel.app',
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
