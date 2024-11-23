@@ -12,9 +12,8 @@ const PORT = process.env.PORT || 3000;
 const corsOptions = {
     origin: [
         'http://localhost:3000', 
-        'http://localhost:3001', 
         'https://www-coral-three.vercel.app', 
-        'https://database-imft.onrender.com'
+        'https://database-ro16.onrender.com'
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
