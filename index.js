@@ -13,7 +13,8 @@ const corsOptions = {
     origin: [
         'http://localhost:3000', 
         'https://www-coral-three.vercel.app', 
-        'https://database-ro16.onrender.com'
+        'https://database-ro16.onrender.com',
+        'https://test-rho-one-52.vercel.app',
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
