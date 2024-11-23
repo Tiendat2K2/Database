@@ -15,7 +15,7 @@ const corsOptions = {
         'https://www-coral-three.vercel.app', 
         'https://database-ro16.onrender.com',
         'https://www-xi-blush.vercel.app',
-        'https://cntt-seven.vercel.app',
+        'https://www-azure-seven.vercel.app',
     ],
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
