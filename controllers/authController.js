@@ -1,4 +1,5 @@
 const bcrypt = require('bcrypt');
+const Dulieu = require('../models/Dulieu');
 const Users = require('../models/Users'); 
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
@@ -198,11 +199,24 @@ exports.resetTeacherPassword = async (req, res) => {
 exports.deleteTeacher = async (req, res) => {
     const { UserID } = req.query;  // Get UserID from the query parameter
     try {
+        // Check if the teacher exists in the Users table
         const teacher = await Users.findOne({ where: { UserID } });
         if (!teacher) {
             return res.status(404).json({ message: 'Không tìm thấy giáo viên' });
         }
+
+        // Check if the UserID exists in the Dulieu table
+        const dulieu = await Dulieu.findAll({ where: { UserID } });
+        if (dulieu.length > 0) {
+            // Update all records with the UserID to set UserID to 1
+            await Dulieu.update(
+                { UserID: 1 },
+                { where: { UserID } }
+            );
+        }
+        // Now delete the teacher from the Users table
         await Users.destroy({ where: { UserID } });
+
         return res.status(200).json({ status: 1, message: 'Xóa giáo viên thành công' });
     } catch (err) {
         console.error(err);  // Log detailed error
@@ -501,6 +515,9 @@ exports.getAllUsers = async (req, res) => {
             ],
             where: {isAdmin: false } 
         });
+
+        
+
         res.status(200).json({
             status: 1, // Trạng thái thành công
             message: 'Danh sách người dùng', // Tin nhắn trả về
