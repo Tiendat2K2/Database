@@ -3,7 +3,6 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const { uploadToDrive, getFileFromDrive } = require('../config/Google');
-
 // Cấu hình multer với kiểm tra loại file
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -18,7 +17,6 @@ const storage = multer.diskStorage({
         cb(null, uniqueSuffix + '-' + file.originalname);
     }
 });
-
 const fileFilter = (req, file, cb) => {
     const allowedTypes = ['.pdf', '.doc', '.docx'];
     const ext = path.extname(file.originalname).toLowerCase();
@@ -28,12 +26,10 @@ const fileFilter = (req, file, cb) => {
         cb(new Error('Chỉ chấp nhận file PDF hoặc Word'));
     }
 };
-
 const upload = multer({ 
     storage: storage,
     fileFilter: fileFilter
 });
-
 // Các hàm hiện có giữ nguyên...
 exports.getDulieu = async (req, res) => {
     try {
@@ -47,7 +43,6 @@ exports.getDulieu = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
 // Cập nhật hàm addDulieu để sử dụng Google Drive
 exports.addDulieu = [
     upload.single('Files'),
@@ -98,7 +93,6 @@ exports.addDulieu = [
         }
     }
 ];
-
 // Cập nhật hàm updateDulieu để sử dụng Google Drive
 exports.updateDulieu = [
     upload.single('Files'),
@@ -110,13 +104,10 @@ exports.updateDulieu = [
             if (!dulieu) {
                 return res.status(404).json({ message: "Dữ liệu không tồn tại" });
             }
-
-            const { Tieude, NhomTacGia, Tapchixuatban, Thongtintamtapchi, Ghichu, UserID, ChuyenNganhID, Namhoc } = req.body;
-
-            if (!Tieude || !UserID || !ChuyenNganhID) {
-                return res.status(400).json({ message: "Các trường Tieude, UserID và ChuyenNganhID là bắt buộc" });
+            const { Tieude, NhomTacGia, Tapchixuatban, Thongtintamtapchi, Ghichu, UserID, ChuyenNganhID, Namhoc } = req.body;// Assuming `id` is the current user's ID
+            if ( !ChuyenNganhID || !UserID) {
+                return res.status(400).json({ message: "Các trường UserID và ChuyenNganhID là bắt buộc" });
             }
-
             let driveFileId = dulieu.Files;
             let driveFileUrl = dulieu.FileUrl;
 
@@ -125,7 +116,6 @@ exports.updateDulieu = [
                 const driveResponse = await uploadToDrive(req.file.path);
                 driveFileId = driveResponse.id;
                 driveFileUrl = driveResponse.webViewLink;
-                
                 // Xóa file tạm
                 fs.unlinkSync(req.file.path);
             }
@@ -137,7 +127,6 @@ exports.updateDulieu = [
             dulieu.Tapchixuatban = Tapchixuatban;
             dulieu.Thongtintamtapchi = Thongtintamtapchi;
             dulieu.Ghichu = Ghichu;
-            dulieu.UserID = UserID;
             dulieu.ChuyenNganhID = ChuyenNganhID;
             dulieu.Namhoc = Namhoc;
 
@@ -156,7 +145,6 @@ exports.updateDulieu = [
         }
     }
 ];
-
 // Cập nhật hàm viewFile để sử dụng Google Drive
 exports.viewFile = async (req, res) => {
     try {
@@ -186,8 +174,6 @@ exports.viewFile = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
-
 // Các hàm khác giữ nguyên...
 exports.getDulieuByUserID = async (req, res) => {
     try {
@@ -196,9 +182,6 @@ exports.getDulieuByUserID = async (req, res) => {
             return res.status(400).json({ message: "Vui lòng nhập UserID" });
         }
         const dulieu = await Dulieu.findAll({ where: { UserID: UserID } });
-        if (dulieu.length === 0) {
-            return res.status(404).json({ message: "Không tìm thấy dữ liệu cho UserID này" });
-        }
         res.status(200).json({
             status: 1,
             message: 'Dữ liệu',
@@ -220,7 +203,6 @@ exports.getDulieucount = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
 // Thêm hàm deleteDulieu nếu chưa có
 exports.deleteDulieu = async (req, res) => {
     try {
