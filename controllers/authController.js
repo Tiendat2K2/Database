@@ -299,6 +299,15 @@ exports.updateUser = async (req, res) => {
                 return res.status(400).json({ message: 'Số điện thoại đã tồn tại!' });
             }
         }
+        if (MGV) {
+            const existingUserByMGV = await Users.findOne({
+                where: { MGV, UserID: { [Sequelize.Op.ne]: parsedUserID } }
+            });
+
+            if (existingUserByMGV) {
+                return res.status(400).json({ message: 'Mã giảng viên đã tồn tại!' });
+            }
+        }
 
         // Prepare fields for updating, ensuring no undefined or null values are passed
         const fieldsToUpdate = {
